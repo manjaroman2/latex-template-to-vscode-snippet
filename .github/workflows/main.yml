@@ -56,26 +56,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{github.run_number}}
-          release_name: Release Version ${{github.run_number}}
+          tag_name: v${{ github.run_number }}
+          release_name: Release Version ${{ github.run_number }}
           draft: false
           prerelease: false
       - name: Upload windows artifact
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload}}
-          asset_path: ./tex2snip_windows/tex2snip.exe
-          asset_name: tex2snip_windows.exe
-          asset_content_type: application
+          files: |
+            ./tex2snip_windows/tex2snip.exe
 
       - name: Upload linux artifact
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload}}
-          asset_path: ./tex2snip_linux/tex2snip
-          asset_name: tex2snip_linux
-          asset_content_type: application
+          files: |
+            ./tex2snip_linux/tex2snip
