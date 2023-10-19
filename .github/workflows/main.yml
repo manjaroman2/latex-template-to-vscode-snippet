@@ -34,13 +34,13 @@ jobs:
                   draft: false
                   prerelease: false
             - name: Build artifacts
-              run: pyinstaller -F latex_template_to_vscode_snippet.py
+              run: pyinstaller -F latex_template_to_vscode_snippet.py --distpath ${{github.workspace}}/dist
             - name: Upload windows artifact
               uses: actions/upload-release-asset@v1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
               with:
                   upload_url: ${{ steps.create_release.outputs.upload_url }}
-                  asset_path: ./dist/latex_template_to_vscode_snippet
+                  asset_path: ${{github.workflow}}/dist/latex_template_to_vscode_snippet
                   asset_name: latex_template_to_vscode_snippet
                   asset_content_type: application/octet-stream
