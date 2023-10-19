@@ -12,3 +12,4 @@
 `git clone git@github.com:manjaroman2/latex-template-to-vscode-snippet.git &&`
 `cd latex-template-to-vscode-snippet &&`
 `python src/latex_template_to_vscode_snippet.py` 
+
