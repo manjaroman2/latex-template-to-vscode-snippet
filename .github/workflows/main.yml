@@ -1,0 +1,9 @@
+name: Build binaries
+run-name: ${{ github.actor }} is building binaries
+on: [push] 
+jobs:
+  Build-Windows:
+    runs-on: windows-latest
+    steps: 
+    - name: Check out repo
+      uses: actions/checkout@v4
