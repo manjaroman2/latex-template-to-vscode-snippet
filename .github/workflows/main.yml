@@ -11,9 +11,6 @@ jobs:
     build:
         permissions: write-all
         runs-on: windows-latest
-        defaults:
-            run:
-                working-directory: ./app
         steps:
             - name: Checkout repo
               uses: actions/checkout@v4
