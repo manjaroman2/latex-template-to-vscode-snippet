@@ -120,7 +120,7 @@ while snippet_name in latex_snippets:
     print(f"Snippet '{snippet_name}' already exists.")
     if dumps(latex_snippets[snippet_name]) == dumps(new_snippet):
         print(f"Snippet '{snippet_name}' is identical to new snippet, skipping")
-        exit() 
+        exit(0) 
     if snippet_name[-1].isdigit():
         snippet_name = snippet_name[:-1] + str(int(snippet_name[-1]) + 1) 
     else:
