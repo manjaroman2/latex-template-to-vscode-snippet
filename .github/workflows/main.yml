@@ -11,6 +11,9 @@ jobs:
     build:
         permissions: write-all
         runs-on: windows-latest
+        defaults:
+            run:
+                working-directory: ./app
         steps:
             - name: Checkout repo
               uses: actions/checkout@v4
@@ -20,6 +23,8 @@ jobs:
                   python-version: "3.10"
             - run: pip install pyinstaller
             - run: pip install -r requirements.txt
+            - name: Build artifacts
+              run: pyinstaller -F latex_template_to_vscode_snippet.py --distpath /app/dist
             - name: Create Release
               id: create_release
               uses: actions/create-release@v1
@@ -34,14 +39,12 @@ jobs:
                   #     - Second Change
                   draft: false
                   prerelease: false
-            - name: Build artifacts
-              run: pyinstaller -F latex_template_to_vscode_snippet.py --distpath ${{github.workspace}}/dist
             - name: Upload windows artifact
               uses: actions/upload-release-asset@v1
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
               with:
                   upload_url: ${{ steps.create_release.outputs.upload_url }}
-                  asset_path: ${{github.workflow}}/dist/latex_template_to_vscode_snippet
+                  asset_path: /app/dist/latex_template_to_vscode_snippet
                   asset_name: latex_template_to_vscode_snippet
                   asset_content_type: application/octet-stream
