@@ -54,6 +54,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         # if: startsWith(github.ref, 'refs/tags/')
         with:
+          tag_name: ${{github.event.head_commit.message }}
           files: |
             ./tex2snip_windows/tex2snip.exe
             ./tex2snip_linux/tex2snip
