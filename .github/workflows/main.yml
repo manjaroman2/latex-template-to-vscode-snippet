@@ -2,8 +2,8 @@ name: Build and publish release
 on:
   push:
     branches: [main]
-    paths:
-      - "**.py"
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
 permissions: write-all
 jobs:
@@ -50,28 +50,29 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           path: ./
-      - name: Create github release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release Version ${{ github.run_number }}
-          draft: false
-          prerelease: false
-      - name: Upload windows artifact
+      - name: Release
         uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             ./tex2snip_windows/tex2snip.exe
-
-      - name: Upload linux artifact
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: |
             ./tex2snip_linux/tex2snip
+        #     id: create_release
+        #     uses: actions/create-release@v1
+        #     env:
+        #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #     with:
+        #       tag_name: v${{ github.run_number }}
+        #       release_name: Release Version ${{ github.run_number }}
+        #       draft: false
+        #       prerelease: false
+        #   - name: Upload windows artifact
+        #     uses: softprops/action-gh-release@v1
+        #     env:
+        #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    #   - name: Upload linux artifact
+    #     uses: softprops/action-gh-release@v1
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     with:
