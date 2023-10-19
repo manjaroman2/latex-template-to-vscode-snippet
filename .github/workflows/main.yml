@@ -8,14 +8,38 @@ on:
 
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: windows-latest
         steps:
-            - uses: actions/checkout@v4
-            - name: Package Application
-              uses: JackMcKew/pyinstaller-action-windows@main
+            - name: Checkout repo
+              uses: actions/checkout@v4
+            - name: Setup python
+              uses: actions/setup-python@v4
               with:
-                  path: src
-            - uses: actions/upload-artifact@v3
+                  python-version: "3.10"
+            - run: pip install pyinstaller
+            - run: pip install -r requirements.txt
+            - name: Create Release
+              id: create_release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
               with:
-                  name: ${{ github.repository }}
-                  path: src/dist/windows
+                  tag_name: ${{ github.ref }}
+                  release_name: Release ${{ github.ref }}
+                  # body: |
+                  #     Changes in this Release
+                  #     - First Change
+                  #     - Second Change
+                  draft: false
+                  prerelease: false
+            - name: Build artifacts
+              run: pyinstaller -F latex_template_to_vscode_snippet.py
+            - name: Upload windows artifact
+              uses: actions/upload-release-asset@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+              with:
+                  upload_url: ${{ steps.create_release.outputs.upload_url }}
+                  asset_path: ./dist/latex_template_to_vscode_snippet
+                  asset_name: latex_template_to_vscode_snippet
+                  asset_content_type: application/octet-stream
