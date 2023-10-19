@@ -1,9 +1,21 @@
 name: Build binaries
 run-name: ${{ github.actor }} is building binaries
-on: [push] 
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
 jobs:
-  Build-Windows:
-    runs-on: windows-latest
-    steps: 
-    - name: Check out repo
-      uses: actions/checkout@v4
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Package Application
+              uses: JackMcKew/pyinstaller-action-windows@main
+              with:
+                  path: .
+            - uses: actions/upload-artifact@v2
+              with:
+                  name: name-of-artifact
+                  path: dist/windows
