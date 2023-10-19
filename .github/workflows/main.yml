@@ -20,7 +20,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: pip install pyinstaller
       - run: pip install -r requirements.txt
-      - run: pyinstaller -F --noconsole latex_template_to_vscode_snippet.py-n tex2snip.exe
+      - run: pyinstaller -F --noconsole -n tex2snip.exe latex_template_to_vscode_snippet.py
       - uses: actions/upload-artifact@v3
         with:
           name: tex2snip_windows
@@ -38,7 +38,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: pip install pyinstaller
       - run: pip install -r requirements.txt
-      - run: pyinstaller -F --noconsole latex_template_to_vscode_snippet.py-n tex2snip
+      - run: pyinstaller -F --noconsole -n tex2snip latex_template_to_vscode_snippet.py
       - uses: actions/upload-artifact@v3
         with:
           name: tex2snip_linux
